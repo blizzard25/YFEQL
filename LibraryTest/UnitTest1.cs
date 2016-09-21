@@ -13,6 +13,11 @@ namespace LibraryTest
         //normally this list will come from the application referencing the YahooFinanceExchageQueryLibrary
         public static List<string> currencyCodes = new List<string>();
         public decimal exchangeRate;
+        private static string baseUrlTemplate = String.Format(
+            "{0}{1}{2}", urlStart, urlMid, endUrl);
+        public static string urlStart = "http://query.yahooapis.com/v1/public/yql?q=";
+        public static string urlMid = "select%20*%20from%20yahoo.finance.xchange%20where%20pair%20in%20({0})";
+        public static string endUrl = "&env=store://datatables.org/alltableswithkeys";
 
         [TestMethod]
         public void TestMethod1()

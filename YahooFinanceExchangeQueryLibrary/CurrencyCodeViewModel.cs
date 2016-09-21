@@ -15,39 +15,58 @@ namespace YahooFinanceExchangeQueryLibrary
         public decimal exchangeRate;
         public string targetCurrencyCode;
         public DateTime queryDate;
-        private string baseUrl;
-        private string queryUrl;
-        private string yahooQuery;
-        private static string urlStart = "http://query.yahooapis.com/v1/public/yr1?r=";
-        private static string endUrl = "&env=store://datatables.org/alltableswithkeys";
+        private string baseUrl = "";
+        private string urlStart = "";
+        private string urlEnd = "";
+        private string queryUrl = "";
+        private string yqlQuery = "";
         public string coreCurrencyCode;        
 
+        // requires the manual setting of the required values
         public CurrencyCodeViewModel()
         {                        
             YahooData yahooData = new YahooData(this.coreCurrencyCode, this.targetCurrencyCode, this.baseUrl, this.currencyCodeList);
             this.inputCodeList = yahooData.inputCodeList;
+            this.queryUrl = yahooData.queryUrl;
             this.exchangeRate = yahooData.RetrieveExchangeRate(this.inputCodeList, this.targetCurrencyCode);
             this.queryDate = Convert.ToDateTime(inputCodeList.First(i => i.Id == yahooData.comboCode).Date);
         }
 
-        public CurrencyCodeViewModel(string query)
+        // for piecing together the query url given url inputs
+        public CurrencyCodeViewModel(string urlStart, string urlEnd, string query, string targetCode, List<string> currencyCodes)
         {
-            this.yahooQuery = query;
-            YahooData yahooData = new YahooData(
-                CurrencyCodeViewModel.urlStart, this.yahooQuery, CurrencyCodeViewModel.endUrl, this.targetCurrencyCode, this.currencyCodeList);
+            this.urlStart = urlStart;
+            this.urlEnd = urlEnd;
+            this.yqlQuery = query;
+            this.targetCurrencyCode = targetCode;
+            this.currencyCodeList = currencyCodes;
+
+            YahooData yahooData = new YahooData(urlStart, query, urlEnd, targetCode, currencyCodes);
+
             this.inputCodeList = yahooData.inputCodeList;
+            this.queryUrl = yahooData.queryUrl;
             this.exchangeRate = yahooData.RetrieveExchangeRate(this.inputCodeList, this.targetCurrencyCode);
             this.queryDate = Convert.ToDateTime(inputCodeList.First(i => i.Id == yahooData.comboCode).Date);
         }
 
-        public CurrencyCodeViewModel(bool buildQueryFromCodes)
+        // auto-generates the YQL query and auto-generates the encoded URL
+        public CurrencyCodeViewModel(string coreCode, string targetCode, List<string> currencyCodes)
         {
-            if (buildQueryFromCodes == true) {
-                YahooData yahooData = new YahooData(this.coreCurrencyCode, this.targetCurrencyCode, this.currencyCodeList);
-                this.inputCodeList = yahooData.inputCodeList;
-                this.exchangeRate = yahooData.RetrieveExchangeRate(this.inputCodeList, this.targetCurrencyCode);
-                this.queryDate = Convert.ToDateTime(inputCodeList.First(i => i.Id == yahooData.comboCode).Date);
-            }
+            this.coreCurrencyCode = coreCode;
+            this.targetCurrencyCode = targetCode;
+            this.currencyCodeList = currencyCodes;
+
+            YahooData yahooData = new YahooData(coreCode, targetCode, currencyCodes);
+
+            this.inputCodeList = yahooData.inputCodeList;
+            this.queryUrl = yahooData.queryUrl;
+            this.exchangeRate = yahooData.RetrieveExchangeRate(this.inputCodeList, this.targetCurrencyCode);
+            this.queryDate = Convert.ToDateTime(inputCodeList.First(i => i.Id == yahooData.comboCode).Date);
+        }
+
+        public void AddBaseUrl(string url)
+        {
+            this.baseUrl = url;
         }
 
         public void AddCurrencyCodeToList(string currCode)
@@ -85,15 +104,25 @@ namespace YahooFinanceExchangeQueryLibrary
             return this.baseUrl = input;
         }
 
-        public static string RetrieveUrlStart()
+        public string RetrieveUrlStart()
         {
-            return CurrencyCodeViewModel.urlStart;
+            return this.urlStart;
         }
 
-        public static string RetrieveEndUrl()
+        public string RetrieveEndUrl()
         {
-            return CurrencyCodeViewModel.endUrl;
+            return this.urlEnd;
         }
 
+        public string RetrieveQueryUrl()
+        {
+            return this.queryUrl;
+        }
+
+        public void SetYqlQuery(string query)
+        {
+            this.yqlQuery = query;
+
+        }
     }
 }

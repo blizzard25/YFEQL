@@ -11,15 +11,15 @@ namespace YahooFinanceExchangeQueryLibrary
 {
     public class YahooData
     {
-        public string coreCode;
-        public string baseUrl;
+        public string coreCode = "";
+        public string baseUrl = "";
         public List<string> targetCodeList = new List<string>();
         public List<string> codeComboList = new List<string>();
         public List<InputCode> inputCodeList = new List<InputCode>();
-        public string comboCode;
+        public string comboCode = "";
         private string pairCodeTemplate = "\"{0}\"";
-        private string yqlQuery;
-        public string queryUrl;
+        private string yqlQuery = "";
+        public string queryUrl = "";
         public XDocument xdoc;
         public decimal exchangeRate;
         public DateTime queryDate;
