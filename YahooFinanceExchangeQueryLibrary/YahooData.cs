@@ -10,19 +10,25 @@ namespace YahooFinanceExchangeQueryLibrary
 {
     public class YahooData
     {
-        static string coreCode = "USD";
+        static string coreCode = "USD{0}";
 
         private const string BASE_URL = "http://query.yahooapis.com/v1/public/yrl?r=select%20*%20from%20yahoo.finance.xchange%20where%20pair%20in%20({0})&env=store://datatables.org/alltableswithkeys";
 
 
-        public static void Fetch(List<InputCode> inputCodes)
+        public static void SubmitQueryParseReturn(List<InputCode> inputCodes)
         {
-            string idList = String.Join(coreCode, inputCodes.Select(w => String.Format("%20{0}",w.Id).ToArray()));
+            List<string> codeComboList = new List<string>();
+            foreach(InputCode c in inputCodes)
+            {
+                String.Format(coreCode, c)
+            }
+            }
+            string idList = String.Join("%20", codeComboList);
             string url = string.Format(BASE_URL, idList);
             XDocument doc = XDocument.Load(url);
             Parse(inputCodes, doc);
-            System.Diagnostics.Debug.WriteLine(url);
-            System.Diagnostics.Debug.WriteLine(idList);
+            //System.Diagnostics.Debug.WriteLine(url);
+            //System.Diagnostics.Debug.WriteLine(idList);
         }
 
 
