@@ -2,3 +2,7 @@ c:\users\evansanders\documents\visual studio 2015\Projects\YahooFinanceExchangeQ
 c:\users\evansanders\documents\visual studio 2015\Projects\YahooFinanceExchangeQueryLibrary\YahooFinanceExchangeQueryLibrary\obj\Debug\YahooFinanceExchangeQueryLibrary.pdb
 c:\users\evansanders\documents\visual studio 2015\Projects\YahooFinanceExchangeQueryLibrary\YahooFinanceExchangeQueryLibrary\bin\Debug\YahooFinanceExchangeQueryLibrary.exe
 c:\users\evansanders\documents\visual studio 2015\Projects\YahooFinanceExchangeQueryLibrary\YahooFinanceExchangeQueryLibrary\obj\Debug\YahooFinanceExchangeQueryLibrary.exe
+C:\Users\EvanSanders\Documents\Visual Studio 2015\Projects\YFEQL\YahooFinanceExchangeQueryLibrary\bin\Debug\YahooFinanceExchangeQueryLibrary.dll
+C:\Users\EvanSanders\Documents\Visual Studio 2015\Projects\YFEQL\YahooFinanceExchangeQueryLibrary\bin\Debug\YahooFinanceExchangeQueryLibrary.pdb
+C:\Users\EvanSanders\Documents\Visual Studio 2015\Projects\YFEQL\YahooFinanceExchangeQueryLibrary\obj\Debug\YahooFinanceExchangeQueryLibrary.dll
+C:\Users\EvanSanders\Documents\Visual Studio 2015\Projects\YFEQL\YahooFinanceExchangeQueryLibrary\obj\Debug\YahooFinanceExchangeQueryLibrary.pdb

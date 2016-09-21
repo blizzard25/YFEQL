@@ -10,30 +10,12 @@ namespace YahooFinanceExchangeQueryLibrary
     public class InputCode
     {
 
-        public InputCode(string combinedCodes)
-        {
-            id = combinedCodes;
-        }
-
         private string name;
         private string id;
         private decimal? rate;
         private decimal? ask;
         private decimal? bid;
         private DateTime? date;
-        private DateTime lastUpdate;
-
-        public DateTime LastUpdate
-        {
-            get
-            {
-                return lastUpdate;
-            }
-            set
-            {
-                lastUpdate = value;
-            }
-        }
 
         public string Name
         {

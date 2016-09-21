@@ -10,43 +10,84 @@ namespace YahooFinanceExchangeQueryLibrary
 {
     public class YahooData
     {
-        static string coreCode = "USD{0}";
+        public static string coreCode;
+        public static string baseUrl;
+        public static List<string> targetCodeList = new List<string>();
+        public static List<string> codeComboList = new List<string>();
+        public static List<InputCode> inputCodeList = new List<InputCode>();
+        public static string comboCode;
+        public static string queryUrl;
+        public static XDocument xdoc;
+        public static decimal exchangeRate;
+        public static DateTime queryDate;
 
-        private const string BASE_URL = "http://query.yahooapis.com/v1/public/yrl?r=select%20*%20from%20yahoo.finance.xchange%20where%20pair%20in%20({0})&env=store://datatables.org/alltableswithkeys";
-
-
-        public static void SubmitQueryParseReturn(List<InputCode> inputCodes)
+        public YahooData(string coreCode, string targetCode, string baseUrl, List<string> targetCodeList)
         {
-            List<string> codeComboList = new List<string>();
-            foreach(InputCode c in inputCodes)
+            YahooData.coreCode = coreCode;
+            YahooData.baseUrl = baseUrl;
+            YahooData.targetCodeList = targetCodeList;
+            
+            foreach(string t in targetCodeList)
             {
-                String.Format(coreCode, c)
+                YahooData.codeComboList.Add(CombineCoreAndTargetCode(coreCode, t));
             }
+
+            foreach(string cc in YahooData.codeComboList)
+            {
+                InputCode listObj = new InputCode();
+                listObj.Id = cc;
+                YahooData.inputCodeList.Add(listObj);
             }
-            string idList = String.Join("%20", codeComboList);
-            string url = string.Format(BASE_URL, idList);
-            XDocument doc = XDocument.Load(url);
-            Parse(inputCodes, doc);
-            //System.Diagnostics.Debug.WriteLine(url);
-            //System.Diagnostics.Debug.WriteLine(idList);
+
+            YahooData.queryUrl = CreateQueryUrl(YahooData.codeComboList, coreCode);
+            SubmitQuery(YahooData.queryUrl);
+            ParseReturnedXml(YahooData.inputCodeList, YahooData.xdoc);
+
         }
 
+        public static string CombineCoreAndTargetCode(string core, string targetCode)
+        {
+            string combo = String.Format(core, targetCode);
+            return combo;
+        }
 
-        private static void Parse(List<InputCode> inputCodes, XDocument doc)
+        public static string CreateQueryUrl(List<string> comboList, string coreCode)
+        {
+            string idList = String.Join("%20, ", comboList);
+            string url = String.Format(coreCode, idList);
+            return url;
+        }
+
+        public static void SubmitQuery(string queryUrl)
+        {
+            YahooData.xdoc = XDocument.Load(queryUrl);
+        }
+
+        public static decimal RetrieveExchangeRate(List<InputCode> ic, string combo)
+        {
+            InputCode input = FindCodeByTargetId(ic, combo);
+            YahooData.exchangeRate = Convert.ToDecimal(input.Rate);
+            return YahooData.exchangeRate;
+        }
+
+        public static InputCode FindCodeByTargetId(List<InputCode> ic, string combo)
+        {
+            InputCode targetInputCode = ic.First(i => i.Id == combo);
+            return targetInputCode;
+        }
+
+        private static void ParseReturnedXml(List<InputCode> inputCodes, XDocument doc)
         {
             XElement results = doc.Root.Element("results");
 
             foreach (InputCode ic in inputCodes)
             {
-                XElement r = results.Elements("rate").FirstOrDefault(w => w.Attribute("id").Value == ic.Id);
-
+                XElement r = results.Elements("rate").First(w => w.Attribute("id").Value == ic.Id);
                 ic.Name = r.Element("Name").Value;
                 ic.Rate = GetDecimal(r.Element("Rate").Value);
                 ic.Date = GetDateTime(String.Format("{0} {1}", r.Element("Date").Value, r.Element("Time").Value));
                 ic.Ask = GetDecimal(r.Element("Ask").Value);
                 ic.Bid = GetDecimal(r.Element("Bid").Value);
-
-                ic.LastUpdate = DateTime.Now;
             }
         }
 
@@ -66,6 +107,11 @@ namespace YahooFinanceExchangeQueryLibrary
 
             if (DateTime.TryParse(input, out value)) return value;
             return null;
+        }
+
+        public static List<InputCode> GetInputCodeList()
+        {
+            return YahooData.inputCodeList;
         }
     }
 }
