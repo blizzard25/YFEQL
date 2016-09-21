@@ -5,78 +5,134 @@ using System.Linq;
 using System.Xml.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace YahooFinanceExchangeQueryLibrary
 {
     public class YahooData
     {
-        public static string coreCode;
-        public static string baseUrl;
-        public static List<string> targetCodeList = new List<string>();
-        public static List<string> codeComboList = new List<string>();
-        public static List<InputCode> inputCodeList = new List<InputCode>();
-        public static string comboCode;
-        public static string queryUrl;
-        public static XDocument xdoc;
-        public static decimal exchangeRate;
-        public static DateTime queryDate;
+        public string coreCode;
+        public string baseUrl;
+        public List<string> targetCodeList = new List<string>();
+        public List<string> codeComboList = new List<string>();
+        public List<InputCode> inputCodeList = new List<InputCode>();
+        public string comboCode;
+        private string pairCodeTemplate = "\"{0}\"";
+        private string yqlQuery;
+        public string queryUrl;
+        public XDocument xdoc;
+        public decimal exchangeRate;
+        public DateTime queryDate;
 
         public YahooData(string coreCode, string targetCode, string baseUrl, List<string> targetCodeList)
         {
-            YahooData.coreCode = coreCode;
-            YahooData.baseUrl = baseUrl;
-            YahooData.targetCodeList = targetCodeList;
-            
-            foreach(string t in targetCodeList)
-            {
-                YahooData.codeComboList.Add(CombineCoreAndTargetCode(coreCode, t));
-            }
+            this.coreCode = coreCode;
+            this.baseUrl = baseUrl;
+            this.targetCodeList = targetCodeList;
 
-            foreach(string cc in YahooData.codeComboList)
+            GenerateInputCodeList();
+            SubmitQuery(this.queryUrl);
+        }
+
+        public YahooData(string urlBegin, string query, string urlEnd, string targetCode, List<string> targetCodeList)
+        {
+            this.targetCodeList = targetCodeList;
+            
+            GenerateUrlFromInputQuery(urlBegin, urlEnd, query);
+            SubmitQuery(this.queryUrl);
+
+        }
+
+        public YahooData(string coreCode, string targetCode, List<string> targetCodes)
+        {
+            this.targetCodeList = targetCodes;
+            this.coreCode = coreCode;
+
+            GenerateUrlFromInputQuery(YqlQueryBuilder(this.coreCode, this.targetCodeList));
+            SubmitQuery(this.queryUrl);
+
+        }
+
+        public string CombineCoreAndTargetCode(string core, string targetCode)
+        {
+            this.comboCode = String.Format(core, targetCode);
+            return this.comboCode;
+        }
+
+        public void GenerateCodeComboList()
+        {
+            foreach (string t in this.targetCodeList)
+            {
+                this.codeComboList.Add(String.Format(pairCodeTemplate, CombineCoreAndTargetCode(this.coreCode, t)));
+            }
+        }
+
+        public void GenerateInputCodeList()
+        {
+            GenerateCodeComboList();
+            foreach (string cc in this.codeComboList)
             {
                 InputCode listObj = new InputCode();
                 listObj.Id = cc;
-                YahooData.inputCodeList.Add(listObj);
+                this.inputCodeList.Add(listObj);
             }
-
-            YahooData.queryUrl = CreateQueryUrl(YahooData.codeComboList, coreCode);
-            SubmitQuery(YahooData.queryUrl);
-            ParseReturnedXml(YahooData.inputCodeList, YahooData.xdoc);
-
         }
 
-        public static string CombineCoreAndTargetCode(string core, string targetCode)
+        private string CreateQueryUrl(List<string> comboList, string baseUrl)
         {
-            string combo = String.Format(core, targetCode);
-            return combo;
-        }
-
-        public static string CreateQueryUrl(List<string> comboList, string coreCode)
-        {
-            string idList = String.Join("%20, ", comboList);
-            string url = String.Format(coreCode, idList);
+            string idList = String.Join(",%20", comboList);
+            string url = String.Format(baseUrl, idList);
             return url;
         }
 
-        public static void SubmitQuery(string queryUrl)
+        private string YqlQueryBuilder(string coreCode, List<string> targetCodes)
         {
-            YahooData.xdoc = XDocument.Load(queryUrl);
+            this.targetCodeList = targetCodes;
+            this.coreCode = coreCode;
+            this.GenerateCodeComboList();
+
+            string yqlParams = String.Format("({0})", this.codeComboList);
+            string yqlStatement = "Select * From yahoo.finance.xchange Where pair in {0}";
+            string yqlQuery = String.Format(yqlStatement, yqlParams);
+
+            return yqlQuery;
         }
 
-        public static decimal RetrieveExchangeRate(List<InputCode> ic, string combo)
+        private string GenerateUrlFromInputQuery(string urlBegin, string urlEnd, string query)
+        {
+            string yqlQuery = query;
+            string unencodedUrl = String.Format("{0}{1}{2}", urlBegin, yqlQuery, urlEnd);
+            this.queryUrl = HttpUtility.UrlEncode(unencodedUrl);
+            return this.queryUrl;
+        }
+
+        private string GenerateUrlFromInputQuery(string query)
+        {
+            return this.queryUrl = HttpUtility.UrlEncode(
+                String.Format("{0}{1}{2}", CurrencyCodeViewModel.RetrieveUrlStart(), query, CurrencyCodeViewModel.RetrieveEndUrl()));
+        }
+
+        public void SubmitQuery(string queryUrl)
+        {
+            this.queryUrl = CreateQueryUrl(this.codeComboList, this.coreCode);
+            this.xdoc = XDocument.Load(queryUrl);
+            ParseReturnedXml(this.inputCodeList, this.xdoc);
+        }
+
+        public decimal RetrieveExchangeRate(List<InputCode> ic, string combo)
         {
             InputCode input = FindCodeByTargetId(ic, combo);
-            YahooData.exchangeRate = Convert.ToDecimal(input.Rate);
-            return YahooData.exchangeRate;
+            this.exchangeRate = Convert.ToDecimal(input.Rate);
+            return this.exchangeRate;
         }
 
-        public static InputCode FindCodeByTargetId(List<InputCode> ic, string combo)
+        public InputCode FindCodeByTargetId(List<InputCode> ic, string combo)
         {
             InputCode targetInputCode = ic.First(i => i.Id == combo);
             return targetInputCode;
         }
 
-        private static void ParseReturnedXml(List<InputCode> inputCodes, XDocument doc)
+        private void ParseReturnedXml(List<InputCode> inputCodes, XDocument doc)
         {
             XElement results = doc.Root.Element("results");
 
@@ -102,16 +158,14 @@ namespace YahooFinanceExchangeQueryLibrary
         private static DateTime? GetDateTime(string input)
         {
             if (input == null) return null;
-
             DateTime value;
-
             if (DateTime.TryParse(input, out value)) return value;
             return null;
         }
 
-        public static List<InputCode> GetInputCodeList()
+        public List<InputCode> GetInputCodeList()
         {
-            return YahooData.inputCodeList;
+            return this.inputCodeList;
         }
     }
 }

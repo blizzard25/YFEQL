@@ -3,51 +3,97 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace YahooFinanceExchangeQueryLibrary
 {
     public class CurrencyCodeViewModel
     {
-        public static List<string> currencyCodeList = new List<string>();
-        public static List<InputCode> inputCodeList = new List<InputCode>();
-        public static decimal exchangeRate;
-        public static string targetCurrencyCode;
-        public static DateTime queryDate;
-        private const string baseUrl = "http://query.yahooapis.com/v1/public/yrl" +"?r=select%20*%20from%20yahoo.finance.xchange%20where%20pair%20in%20({0})&env=store://datatables.org/alltableswithkeys";
-        public static string coreCurrencyCode;
-        
+        public List<string> currencyCodeList;
+        public List<InputCode> inputCodeList;
+        public List<string> targetCurrencyCodes;
+        public decimal exchangeRate;
+        public string targetCurrencyCode;
+        public DateTime queryDate;
+        private string baseUrl;
+        private string queryUrl;
+        private string yahooQuery;
+        private static string urlStart = "http://query.yahooapis.com/v1/public/yr1?r=";
+        private static string endUrl = "&env=store://datatables.org/alltableswithkeys";
+        public string coreCurrencyCode;        
 
         public CurrencyCodeViewModel()
         {                        
-            YahooData yahooData = new YahooData(CurrencyCodeViewModel.coreCurrencyCode, CurrencyCodeViewModel.targetCurrencyCode, CurrencyCodeViewModel.baseUrl, CurrencyCodeViewModel.currencyCodeList);
-            CurrencyCodeViewModel.inputCodeList = YahooData.inputCodeList;
-            CurrencyCodeViewModel.exchangeRate = YahooData.RetrieveExchangeRate(CurrencyCodeViewModel.inputCodeList, CurrencyCodeViewModel.targetCurrencyCode);
-            CurrencyCodeViewModel.queryDate = Convert.ToDateTime(inputCodeList.First(i => i.Id == YahooData.comboCode).Date);
+            YahooData yahooData = new YahooData(this.coreCurrencyCode, this.targetCurrencyCode, this.baseUrl, this.currencyCodeList);
+            this.inputCodeList = yahooData.inputCodeList;
+            this.exchangeRate = yahooData.RetrieveExchangeRate(this.inputCodeList, this.targetCurrencyCode);
+            this.queryDate = Convert.ToDateTime(inputCodeList.First(i => i.Id == yahooData.comboCode).Date);
         }
 
-        public static void AddCurrencyCodeToList(string currCode)
+        public CurrencyCodeViewModel(string query)
         {
-            CurrencyCodeViewModel.currencyCodeList.Add(currCode);
+            this.yahooQuery = query;
+            YahooData yahooData = new YahooData(
+                CurrencyCodeViewModel.urlStart, this.yahooQuery, CurrencyCodeViewModel.endUrl, this.targetCurrencyCode, this.currencyCodeList);
+            this.inputCodeList = yahooData.inputCodeList;
+            this.exchangeRate = yahooData.RetrieveExchangeRate(this.inputCodeList, this.targetCurrencyCode);
+            this.queryDate = Convert.ToDateTime(inputCodeList.First(i => i.Id == yahooData.comboCode).Date);
         }
 
-        public static void AddCurrencyCodeList(List<string> currCodes)
+        public CurrencyCodeViewModel(bool buildQueryFromCodes)
         {
-            CurrencyCodeViewModel.currencyCodeList = currCodes;
+            if (buildQueryFromCodes == true) {
+                YahooData yahooData = new YahooData(this.coreCurrencyCode, this.targetCurrencyCode, this.currencyCodeList);
+                this.inputCodeList = yahooData.inputCodeList;
+                this.exchangeRate = yahooData.RetrieveExchangeRate(this.inputCodeList, this.targetCurrencyCode);
+                this.queryDate = Convert.ToDateTime(inputCodeList.First(i => i.Id == yahooData.comboCode).Date);
+            }
         }
 
-        public static void AddTargetCurrency(string target)
+        public void AddCurrencyCodeToList(string currCode)
         {
-            CurrencyCodeViewModel.targetCurrencyCode = target;
+            this.currencyCodeList.Add(currCode);
         }
 
-        public static void AddCoreCurrency(string core)
+        public void AddCurrencyCodeList(List<string> currCodes)
         {
-            CurrencyCodeViewModel.coreCurrencyCode = core;
+            this.currencyCodeList = currCodes;
         }
 
-        public static decimal GetExchangeRate()
+        public void AddTargetCurrency(string target)
         {
-            return CurrencyCodeViewModel.exchangeRate;
+            this.targetCurrencyCode = target;
         }
+
+        public void AddTargetCurrencies(List<string> target)
+        {
+            this.targetCurrencyCodes = target;
+        }
+
+        public void AddCoreCurrency(string core)
+        {
+            this.coreCurrencyCode = core;
+        }
+
+        public decimal GetExchangeRate()
+        {
+            return this.exchangeRate;
+        }
+
+        private string BaseUrl(string input)
+        {
+            return this.baseUrl = input;
+        }
+
+        public static string RetrieveUrlStart()
+        {
+            return CurrencyCodeViewModel.urlStart;
+        }
+
+        public static string RetrieveEndUrl()
+        {
+            return CurrencyCodeViewModel.endUrl;
+        }
+
     }
 }
