@@ -10,8 +10,8 @@ namespace YahooFinanceExchangeQueryLibrary
     public class InputCode
     {
 
-        private string name;
-        private string id;
+        private string name = "";
+        private string id = "";
         private decimal? rate;
         private decimal? ask;
         private decimal? bid;

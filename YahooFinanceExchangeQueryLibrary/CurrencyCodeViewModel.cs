@@ -15,12 +15,12 @@ namespace YahooFinanceExchangeQueryLibrary
         public decimal exchangeRate;
         public string targetCurrencyCode;
         public DateTime queryDate;
-        private string baseUrl = "";
-        private string urlStart = "";
-        private string urlEnd = "";
-        private string queryUrl = "";
-        private string yqlQuery = "";
-        public string coreCurrencyCode;        
+        public string baseUrl = "";
+        public string urlStart = "";
+        public string urlEnd = "";
+        public string queryUrl = "";
+        public string yqlQuery = "";
+        public string coreCurrencyCode = "";        
 
         // requires the manual setting of the required values
         public CurrencyCodeViewModel()

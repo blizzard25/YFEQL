@@ -16,6 +16,7 @@ namespace YahooFinanceExchangeQueryLibrary
         public List<string> targetCodeList = new List<string>();
         public List<string> codeComboList = new List<string>();
         public List<InputCode> inputCodeList = new List<InputCode>();
+        public List<InputCode> outputCodeList = new List<InputCode>();
         public string comboCode = "";
         public string pairCodeTemplate = "\"{0}\"";
         public string yqlQuery = "";
@@ -32,6 +33,7 @@ namespace YahooFinanceExchangeQueryLibrary
 
             GenerateInputCodeList();
             SubmitQuery(this.queryUrl);
+            ParseReturnedXml(this.inputCodeList, this.xdoc);
         }
 
         public YahooData(string urlBegin, string query, string urlEnd, string targetCode, List<string> targetCodeList)
@@ -40,7 +42,7 @@ namespace YahooFinanceExchangeQueryLibrary
             
             GenerateUrlFromInputQuery(urlBegin, urlEnd, query);
             SubmitQuery(this.queryUrl);
-
+            ParseReturnedXml(this.inputCodeList, this.xdoc);
         }
 
         public YahooData(string coreCode, string targetCode, List<string> targetCodes)
@@ -50,7 +52,7 @@ namespace YahooFinanceExchangeQueryLibrary
 
             GenerateUrlFromInputQuery(YqlQueryBuilder(this.coreCode, this.targetCodeList));
             SubmitQuery(this.queryUrl);
-
+            ParseReturnedXml(this.inputCodeList, this.xdoc);
         }
 
         public string CombineCoreAndTargetCode(string core, string targetCode)
@@ -115,7 +117,6 @@ namespace YahooFinanceExchangeQueryLibrary
         {
             this.queryUrl = CreateQueryUrl(this.codeComboList, this.coreCode);
             this.xdoc = XDocument.Load(queryUrl);
-            ParseReturnedXml(this.inputCodeList, this.xdoc);
         }
 
         public decimal RetrieveExchangeRate(List<InputCode> ic, string combo)
@@ -144,6 +145,8 @@ namespace YahooFinanceExchangeQueryLibrary
                 ic.Ask = GetDecimal(r.Element("Ask").Value);
                 ic.Bid = GetDecimal(r.Element("Bid").Value);
             }
+
+            this.outputCodeList = inputCodes;
         }
 
         private static decimal? GetDecimal(string input)
