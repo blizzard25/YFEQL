@@ -26,7 +26,7 @@ namespace YahooFinanceExchangeQueryLibrary
         public CurrencyCodeViewModel()
         {                        
             YahooData yahooData = new YahooData(this.coreCurrencyCode, this.targetCurrencyCode, this.baseUrl, this.currencyCodeList);
-            this.inputCodeList = yahooData.inputCodeList;
+            this.inputCodeList = yahooData.outputCodeList;
             this.queryUrl = yahooData.queryUrl;
             this.exchangeRate = yahooData.RetrieveExchangeRate(this.inputCodeList, this.targetCurrencyCode);
             this.queryDate = Convert.ToDateTime(inputCodeList.First(i => i.Id == yahooData.comboCode).Date);
