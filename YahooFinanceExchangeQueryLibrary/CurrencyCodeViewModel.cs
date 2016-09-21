@@ -18,7 +18,7 @@ namespace YahooFinanceExchangeQueryLibrary
                 AddCurrencyCodes(c);
             }
 
-            YahooData.Fetch(InputCodes);
+            YahooData.SubmitQueryParseReturn(InputCodes);
         }
 
         public static void AddCurrencyCodes(InputCode currCode)
