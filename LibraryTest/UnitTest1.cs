@@ -8,18 +8,32 @@ namespace LibraryTest
     [TestClass]
     public class UnitTest1
     {
-        public static List<InputCode> InputCodes = new List<InputCode>();
+        
+        //random list of currency codes, only used for unit testing purposes
+        //normally this list will come from the application referencing the YahooFinanceExchageQueryLibrary
+        public static List<InputCode> InputCodes = new List<InputCode>()
+        {
+            "EUR",
+            "GDP",
+            "AUD",
+            "BRL",
+            "BZD",
+            "DKK"
+        }
 
-
+        public void AddInputCodesFromList(List<InputCode> lstInputCodes)
+        {
+            foreach(InputCode l in lstInputCodes)
+            {
+                InputCodes.Add(newInputCodes(l));
+            }
+        }
         [TestMethod]
         public void TestMethod1()
         {
-            InputCodes.Add(new InputCode("USD"));
-            InputCodes.Add(new InputCode("EUR"));
-            InputCodes.Add(new InputCode("GBP"));
-            CurrencyCodeViewModel cm = new CurrencyCodeViewModel(InputCodes);
-            System.Diagnostics.Debug.WriteLine(CurrencyCodeViewModel.InputCodes.ToString());
-            
+            AddInputCodesFromList(InputCodes);
+            new CurrencyCodeViewModel(InputCodes);
+            //System.Diagnostics.Debug.WriteLine(CurrencyCodeViewModel.InputCodes.ToString());
         }
     }
 }
