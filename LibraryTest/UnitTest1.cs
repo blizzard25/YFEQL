@@ -11,7 +11,7 @@ namespace LibraryTest
 
         //random list of currency codes, only used for unit testing purposes
         //normally this list will come from the application referencing the YahooFinanceExchageQueryLibrary
-        public static List<string> currencyCodes = new List<string>();
+        public List<string> currencyCodes = new List<string>();
         public decimal exchangeRate;
         private static string baseUrlTemplate = String.Format(
             "{0}{1}{2}", urlStart, urlMid, endUrl);
@@ -24,10 +24,10 @@ namespace LibraryTest
         {
             string coreCode = "USD";
             string targetCode = "GBP";
-            currencyCodes.Add(coreCode);
-            currencyCodes.Add("EUR");
-            currencyCodes.Add(targetCode);
-            currencyCodes.Add("AUD");
+            this.currencyCodes.Add(coreCode);
+            this.currencyCodes.Add("EUR");
+            this.currencyCodes.Add(targetCode);
+            this.currencyCodes.Add("AUD");
 
             CurrencyCodeViewModel ccvm = new CurrencyCodeViewModel();            
             ccvm.AddCurrencyCodeList(currencyCodes);
@@ -41,12 +41,13 @@ namespace LibraryTest
         {
             string coreCode = "USD";
             string targetCode = "GBP";
-            currencyCodes.Add(coreCode);
-            currencyCodes.Add("EUR");
-            currencyCodes.Add(targetCode);
-            currencyCodes.Add("AUD");
 
-            CurrencyCodeViewModel ccvm = new CurrencyCodeViewModel(true);
+            this.currencyCodes.Add(coreCode);
+            this.currencyCodes.Add("EUR");
+            this.currencyCodes.Add(targetCode);
+            this.currencyCodes.Add("AUD");
+
+            CurrencyCodeViewModel ccvm = new CurrencyCodeViewModel(urlStart, endUrl, urlMid, targetCode,currencyCodes);
             ccvm.AddCurrencyCodeList(currencyCodes);
             ccvm.AddTargetCurrency(targetCode);
             ccvm.AddCoreCurrency(coreCode);
@@ -56,8 +57,16 @@ namespace LibraryTest
         [TestMethod]
         public void TestMethod3()
         {
-            string yqlStr = "Select * From yahoo.finance.xchange where pair in (\"USDEUR\", \"USDGBP\")";
-            CurrencyCodeViewModel ccvm = new CurrencyCodeViewModel(yqlStr);
+            string coreCode = "USD";
+            string targetCode = "GBP";
+
+            this.currencyCodes.Add(coreCode);
+            this.currencyCodes.Add("EUR");
+            this.currencyCodes.Add(targetCode);
+            this.currencyCodes.Add("AUD");
+
+            // string yqlStr = "Select * From yahoo.finance.xchange where pair in (\"USDEUR\", \"USDGBP\")";
+            CurrencyCodeViewModel ccvm = new CurrencyCodeViewModel(coreCode, targetCode, currencyCodes);
             ccvm.AddCurrencyCodeList(currencyCodes);
             exchangeRate = ccvm.GetExchangeRate();
         }

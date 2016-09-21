@@ -17,8 +17,8 @@ namespace YahooFinanceExchangeQueryLibrary
         public List<string> codeComboList = new List<string>();
         public List<InputCode> inputCodeList = new List<InputCode>();
         public string comboCode = "";
-        private string pairCodeTemplate = "\"{0}\"";
-        private string yqlQuery = "";
+        public string pairCodeTemplate = "\"{0}\"";
+        public string yqlQuery = "";
         public string queryUrl = "";
         public XDocument xdoc;
         public decimal exchangeRate;
@@ -85,31 +85,30 @@ namespace YahooFinanceExchangeQueryLibrary
             return url;
         }
 
-        private string YqlQueryBuilder(string coreCode, List<string> targetCodes)
+        private string YqlQueryBuilder(string coreCode, List<string> currencyCodes)
         {
-            this.targetCodeList = targetCodes;
+            this.targetCodeList = currencyCodes;
             this.coreCode = coreCode;
-            this.GenerateCodeComboList();
+
+            GenerateCodeComboList();
 
             string yqlParams = String.Format("({0})", this.codeComboList);
             string yqlStatement = "Select * From yahoo.finance.xchange Where pair in {0}";
-            string yqlQuery = String.Format(yqlStatement, yqlParams);
+            this.yqlQuery = String.Format(yqlStatement, yqlParams);
 
-            return yqlQuery;
+            return this.yqlQuery;
         }
 
         private string GenerateUrlFromInputQuery(string urlBegin, string urlEnd, string query)
         {
-            string yqlQuery = query;
-            string unencodedUrl = String.Format("{0}{1}{2}", urlBegin, yqlQuery, urlEnd);
-            this.queryUrl = HttpUtility.UrlEncode(unencodedUrl);
-            return this.queryUrl;
+            return this.queryUrl = HttpUtility.UrlEncode(String.Format("{0}{1}{2}", urlBegin, query, urlEnd));
         }
 
         private string GenerateUrlFromInputQuery(string query)
         {
-            return this.queryUrl = HttpUtility.UrlEncode(
-                String.Format("{0}{1}{2}", CurrencyCodeViewModel.RetrieveUrlStart(), query, CurrencyCodeViewModel.RetrieveEndUrl()));
+            string urlStart = "http://query.yahooapis.com/v1/public/yql?q=";
+            string urlEnd = "&env=store://datatables.org/alltableswithkeys";
+            return this.queryUrl = HttpUtility.UrlEncode(String.Format("{0}{1}{2}", urlStart, query, urlEnd));
         }
 
         public void SubmitQuery(string queryUrl)
