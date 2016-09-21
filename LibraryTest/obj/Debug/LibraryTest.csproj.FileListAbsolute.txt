@@ -1,0 +1,8 @@
+C:\Users\EvanSanders\Documents\Visual Studio 2015\Projects\YahooFinanceExchangeQueryLibrary\LibraryTest\bin\Debug\LibraryTest.dll
+C:\Users\EvanSanders\Documents\Visual Studio 2015\Projects\YahooFinanceExchangeQueryLibrary\LibraryTest\bin\Debug\LibraryTest.pdb
+C:\Users\EvanSanders\Documents\Visual Studio 2015\Projects\YahooFinanceExchangeQueryLibrary\LibraryTest\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+C:\Users\EvanSanders\Documents\Visual Studio 2015\Projects\YahooFinanceExchangeQueryLibrary\LibraryTest\bin\Debug\YahooFinanceExchangeQueryLibrary.pdb
+C:\Users\EvanSanders\Documents\Visual Studio 2015\Projects\YahooFinanceExchangeQueryLibrary\LibraryTest\obj\Debug\LibraryTest.csprojResolveAssemblyReference.cache
+C:\Users\EvanSanders\Documents\Visual Studio 2015\Projects\YahooFinanceExchangeQueryLibrary\LibraryTest\obj\Debug\LibraryTest.dll
+C:\Users\EvanSanders\Documents\Visual Studio 2015\Projects\YahooFinanceExchangeQueryLibrary\LibraryTest\obj\Debug\LibraryTest.pdb
+C:\Users\EvanSanders\Documents\Visual Studio 2015\Projects\YahooFinanceExchangeQueryLibrary\LibraryTest\bin\Debug\YahooFinanceExchangeQueryLibrary.exe
