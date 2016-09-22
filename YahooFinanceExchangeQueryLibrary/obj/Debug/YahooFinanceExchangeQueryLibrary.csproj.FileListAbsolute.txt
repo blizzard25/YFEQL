@@ -6,4 +6,3 @@ C:\Users\EvanSanders\Documents\Visual Studio 2015\Projects\YFEQL\YahooFinanceExc
 C:\Users\EvanSanders\Documents\Visual Studio 2015\Projects\YFEQL\YahooFinanceExchangeQueryLibrary\bin\Debug\YahooFinanceExchangeQueryLibrary.pdb
 C:\Users\EvanSanders\Documents\Visual Studio 2015\Projects\YFEQL\YahooFinanceExchangeQueryLibrary\obj\Debug\YahooFinanceExchangeQueryLibrary.dll
 C:\Users\EvanSanders\Documents\Visual Studio 2015\Projects\YFEQL\YahooFinanceExchangeQueryLibrary\obj\Debug\YahooFinanceExchangeQueryLibrary.pdb
-C:\Users\EvanSanders\Documents\Visual Studio 2015\Projects\YFEQL\YahooFinanceExchangeQueryLibrary\obj\Debug\YahooFinanceExchangeQueryLibrary.csprojResolveAssemblyReference.cache

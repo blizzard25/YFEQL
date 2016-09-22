@@ -9,19 +9,25 @@ namespace YahooFinanceExchangeQueryLibrary
 {
     public class CurrencyCodeViewModel
     {
+        // commented out for future use
+        /*
         public List<string> currencyCodeList;
         public List<InputCode> inputCodeList;
         public List<string> targetCurrencyCodes;
         public decimal exchangeRate;
         public string targetCurrencyCode;
         public DateTime queryDate;
-        public string baseUrl = "";
-        public string urlStart = "";
-        public string urlEnd = "";
-        public string queryUrl = "";
-        public string yqlQuery = "";
-        public string coreCurrencyCode = "";        
+        public string baseUrl;
+        public string urlStart;
+        public string urlEnd;
+        public string queryUrl;
+        public string yqlQuery;
+        public string coreCurrencyCode;        
 
+        public CurrencyCodeViewModel(YahooData yahooData)
+        {
+            this.inputCodeList = yahooData.outputCodeList;
+        }
         // requires the manual setting of the required values
         public CurrencyCodeViewModel()
         {                        
@@ -122,7 +128,7 @@ namespace YahooFinanceExchangeQueryLibrary
         public void SetYqlQuery(string query)
         {
             this.yqlQuery = query;
-
         }
+        */
     }
 }

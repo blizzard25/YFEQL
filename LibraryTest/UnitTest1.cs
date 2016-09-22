@@ -22,53 +22,9 @@ namespace LibraryTest
         [TestMethod]
         public void TestMethod1()
         {
-            string coreCode = "USD";
-            string targetCode = "GBP";
-            this.currencyCodes.Add(coreCode);
-            this.currencyCodes.Add("EUR");
-            this.currencyCodes.Add(targetCode);
-            this.currencyCodes.Add("AUD");
-
-            CurrencyCodeViewModel ccvm = new CurrencyCodeViewModel();            
-            ccvm.AddCurrencyCodeList(currencyCodes);
-            ccvm.AddTargetCurrency(targetCode);
-            ccvm.AddCoreCurrency(coreCode);
-            exchangeRate = ccvm.GetExchangeRate();             
+            ExchangeRate er = new ExchangeRate();
+            var convertedValue = er.BaseCurrency("USD").CurrencyToConvert("GBP").GetExchangeRate();
         }
 
-        [TestMethod]
-        public void TestMethod2()
-        {
-            string coreCode = "USD";
-            string targetCode = "GBP";
-
-            this.currencyCodes.Add(coreCode);
-            this.currencyCodes.Add("EUR");
-            this.currencyCodes.Add(targetCode);
-            this.currencyCodes.Add("AUD");
-
-            CurrencyCodeViewModel ccvm = new CurrencyCodeViewModel(urlStart, endUrl, urlMid, targetCode,currencyCodes);
-            ccvm.AddCurrencyCodeList(currencyCodes);
-            ccvm.AddTargetCurrency(targetCode);
-            ccvm.AddCoreCurrency(coreCode);
-            exchangeRate = ccvm.GetExchangeRate();
-        }
-
-        [TestMethod]
-        public void TestMethod3()
-        {
-            string coreCode = "USD";
-            string targetCode = "GBP";
-
-            this.currencyCodes.Add(coreCode);
-            this.currencyCodes.Add("EUR");
-            this.currencyCodes.Add(targetCode);
-            this.currencyCodes.Add("AUD");
-
-            // string yqlStr = "Select * From yahoo.finance.xchange where pair in (\"USDEUR\", \"USDGBP\")";
-            CurrencyCodeViewModel ccvm = new CurrencyCodeViewModel(coreCode, targetCode, currencyCodes);
-            ccvm.AddCurrencyCodeList(currencyCodes);
-            exchangeRate = ccvm.GetExchangeRate();
-        }
     }
 }
