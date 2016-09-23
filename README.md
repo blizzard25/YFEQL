@@ -13,7 +13,7 @@ code and target code in a method chain along with the exchange rate method. For 
 ExchangeRate e = new ExchangeRate();
 decimal convertedValue = er.BaseCurrency(Base_Currency_Code).CurrencyToConvert(Convert_To_Currency_Code).GetExchangeRate();
 
-To calculate the converted value, simply add the conversion method onto the method chain, passing in the value to convert as an int:
+To calculate the converted value, simply add the conversion method onto the method chain, passing in the value to convert as an decimal:
 
-convertedValue = er.BaseCurrency(Base_Currency_Code).CurrencyToConvert(Convert_To_Currency_Code).GetExchangeRate();.CalculateConvertedValue(Value_To_Convert);
+convertedValue = er.BaseCurrency(Base_Currency_Code).CurrencyToConvert(Convert_To_Currency_Code).GetExchangeRate();.CalculateConvertedValue(Convert.ToDecimal(Value_To_Convert));
 
