@@ -10,7 +10,7 @@ namespace YahooFinanceExchangeQueryLibrary
     {
         public string baseCurrency { get; set; }
         public string convertToCurrency { get; set; }
-        public decimal exchangeRate { get; set; }
+        public decimal? exchangeRate { get; set; }
         public decimal convertedCurrency { get; set; }
 
         public IExchangeRate BaseCurrency(string c)
@@ -28,12 +28,20 @@ namespace YahooFinanceExchangeQueryLibrary
         public IExchangeRate GetExchangeRate()
         {
             YahooData y = new YahooData(baseCurrency, convertToCurrency);
-            decimal rate = y.GetExchangeRate();
+            decimal? rate = y.GetExchangeRate();
             exchangeRate = rate;
             return this;
         }
 
-        public decimal CalculateConvertedValue(decimal value)
+        public decimal? RetrieveExchangeRate()
+        {
+            YahooData y = new YahooData(baseCurrency, convertToCurrency);
+            decimal? rate = y.GetExchangeRate();
+            exchangeRate = rate;
+            return exchangeRate;
+        }
+
+        public decimal? CalculateConvertedValue(decimal value)
         {
             return exchangeRate * value;
         }

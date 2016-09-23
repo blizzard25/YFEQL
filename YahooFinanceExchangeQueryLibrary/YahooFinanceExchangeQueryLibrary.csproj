@@ -44,7 +44,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CurrencyCodeViewModel.cs" />
     <Compile Include="ExchangeRate.cs" />
     <Compile Include="IExchangeRate.cs" />
     <Compile Include="InputCode.cs" />

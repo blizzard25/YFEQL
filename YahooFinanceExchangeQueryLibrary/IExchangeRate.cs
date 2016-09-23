@@ -11,6 +11,7 @@ namespace YahooFinanceExchangeQueryLibrary
         IExchangeRate BaseCurrency(string c);
         IExchangeRate CurrencyToConvert(string c);
         IExchangeRate GetExchangeRate();
-        decimal CalculateConvertedValue(decimal baseValue);
+        decimal? RetrieveExchangeRate();
+        decimal? CalculateConvertedValue(decimal baseValue);
     }
 }

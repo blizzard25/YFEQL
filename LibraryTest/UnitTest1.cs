@@ -23,7 +23,11 @@ namespace LibraryTest
         public void TestMethod1()
         {
             ExchangeRate er = new ExchangeRate();
-            var convertedValue = er.BaseCurrency("USD").CurrencyToConvert("GBP").GetExchangeRate();
+            var convertedValue = er.BaseCurrency("USD").CurrencyToConvert("GBP").GetExchangeRate().CalculateConvertedValue(300);
+            var convertedValueTwo = er.BaseCurrency("USD").CurrencyToConvert("AUD").GetExchangeRate().CalculateConvertedValue(9900);
+            var convertedValueThree = er.BaseCurrency("USD").CurrencyToConvert("EUR").GetExchangeRate().CalculateConvertedValue(9900);
+
+            var rateTest = er.BaseCurrency("USD").CurrencyToConvert("EUR").RetrieveExchangeRate();
         }
 
     }
