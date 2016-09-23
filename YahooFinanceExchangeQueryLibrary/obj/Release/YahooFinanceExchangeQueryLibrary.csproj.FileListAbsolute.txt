@@ -1,0 +1,4 @@
+C:\Users\EvanSanders\Documents\Visual Studio 2015\Projects\YFEQL\YahooFinanceExchangeQueryLibrary\bin\Release\YahooFinanceExchangeQueryLibrary.dll
+C:\Users\EvanSanders\Documents\Visual Studio 2015\Projects\YFEQL\YahooFinanceExchangeQueryLibrary\bin\Release\YahooFinanceExchangeQueryLibrary.pdb
+C:\Users\EvanSanders\Documents\Visual Studio 2015\Projects\YFEQL\YahooFinanceExchangeQueryLibrary\obj\Release\YahooFinanceExchangeQueryLibrary.dll
+C:\Users\EvanSanders\Documents\Visual Studio 2015\Projects\YFEQL\YahooFinanceExchangeQueryLibrary\obj\Release\YahooFinanceExchangeQueryLibrary.pdb

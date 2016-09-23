@@ -43,7 +43,7 @@ namespace YahooFinanceExchangeQueryLibrary
 
         public decimal? CalculateConvertedValue(decimal value)
         {
-            return exchangeRate * value;
+            return (decimal?)Math.Round((double)(exchangeRate * value),2);
         }
     }
 }
