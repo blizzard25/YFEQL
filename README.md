@@ -1,4 +1,4 @@
-# https---github.com-blizzard25-YahooFinanceExchangeQueryLibrary
+# YFEQL - Yahoo Finance Exchange Query Library
 
 <b>Summary</b><br/>
 Simple C# class library for working with the Yahoo Finance Exchange database. Library
